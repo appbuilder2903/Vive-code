@@ -9,6 +9,7 @@ import { DashboardPage } from './pages/DashboardPage';
 import { TemplatesPage } from './pages/TemplatesPage';
 import { EducationPage } from './pages/EducationPage';
 import { AuthCallback } from './components/AuthCallback';
+import { NetlifyCallback } from './components/NetlifyCallback';
 
 function App() {
   return (
@@ -18,6 +19,9 @@ function App() {
       <Route path="/simple" element={<SimpleModePage />} />
       <Route path="/simple-editor" element={<SimpleEditorPage />} />
       <Route path="/simple-templates" element={<SimpleTemplatesPage />} />
+      
+      {/* Netlify OAuth Callback */}
+      <Route path="/netlify/callback" element={<NetlifyCallback />} />
       
       {/* Advanced Mode */}
       <Route path="/home" element={<HomePage />} />

@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Sparkles, Play, Share2, HelpCircle, MessageSquare, Eye, Code, Wand2 } from 'lucide-react';
+import { Sparkles, Play, Share2, HelpCircle, MessageSquare, Eye, Code, Wand2, Globe, Loader2 } from 'lucide-react';
 import { Logo } from '../components/Logo';
+import { netlifyService } from '../services/netlifyService';
 
 export function SimpleEditorPage() {
   const [searchParams] = useSearchParams();
@@ -13,6 +14,9 @@ export function SimpleEditorPage() {
   const [aiMessage, setAiMessage] = useState('');
   const [chatHistory, setChatHistory] = useState<Array<{ role: 'user' | 'assistant'; message: string }>>([]);
   const [isThinking, setIsThinking] = useState(false);
+  const [isDeploying, setIsDeploying] = useState(false);
+  const [deploymentUrl, setDeploymentUrl] = useState<string | null>(null);
+  const [showDeploymentModal, setShowDeploymentModal] = useState(false);
 
   // Simulated generated code based on prompt
   const [generatedCode, setGeneratedCode] = useState({
@@ -87,8 +91,60 @@ export function SimpleEditorPage() {
     setShowPreview(true);
   };
 
+  const handlePublish = async () => {
+    // Check if authenticated with Netlify
+    if (!netlifyService.isAuthenticated()) {
+      // Store return URL
+      localStorage.setItem('netlify_return_url', window.location.pathname + window.location.search);
+      
+      // Redirect to Netlify OAuth
+      const redirectUri = `${window.location.origin}/netlify/callback`;
+      const authUrl = netlifyService.getAuthUrl(redirectUri);
+      window.location.href = authUrl;
+      return;
+    }
+
+    // Deploy to Netlify
+    setIsDeploying(true);
+    setShowDeploymentModal(true);
+
+    try {
+      const projectName = initialPrompt || 'my-project';
+      const result = await netlifyService.deployProject({
+        siteName: projectName,
+        files: {
+          'index.html': generatedCode.html,
+        },
+      });
+
+      if (result.success && result.siteUrl) {
+        setDeploymentUrl(result.siteUrl);
+      } else {
+        alert(`Deployment failed: ${result.error}`);
+        setShowDeploymentModal(false);
+      }
+    } catch (error: any) {
+      alert(`Deployment error: ${error.message}`);
+      setShowDeploymentModal(false);
+    } finally {
+      setIsDeploying(false);
+    }
+  };
+
   const handleShare = () => {
-    alert('Your project link: https://vive-code.app/project/abc123\n\nLink copied to clipboard! 🎉');
+    if (deploymentUrl) {
+      // Copy deployed URL
+      navigator.clipboard.writeText(deploymentUrl);
+      alert(`Your website URL has been copied!\n${deploymentUrl}`);
+    } else {
+      // Show local share message
+      alert('Publish your project to Netlify first to get a shareable link!');
+    }
+  };
+
+  const closeDeploymentModal = () => {
+    setShowDeploymentModal(false);
+    setDeploymentUrl(null);
   };
 
   return (
@@ -110,6 +166,28 @@ export function SimpleEditorPage() {
             >
               <Play className="w-4 h-4" />
               Run
+            </button>
+
+            <button
+              onClick={handlePublish}
+              disabled={isDeploying}
+              className={`px-4 py-2 rounded-lg transition flex items-center gap-2 font-semibold ${
+                isDeploying
+                  ? 'bg-purple-400 cursor-not-allowed'
+                  : 'bg-purple-600 hover:bg-purple-700'
+              } text-white`}
+            >
+              {isDeploying ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Publishing...
+                </>
+              ) : (
+                <>
+                  <Globe className="w-4 h-4" />
+                  Publish
+                </>
+              )}
             </button>
 
             <button
@@ -308,6 +386,74 @@ export function SimpleEditorPage() {
           </div>
         </div>
       </div>
+
+      {/* Deployment Success Modal */}
+      {showDeploymentModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-md w-full p-8">
+            {isDeploying ? (
+              <div className="text-center">
+                <Loader2 className="w-16 h-16 mx-auto mb-6 text-purple-600 animate-spin" />
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">
+                  Publishing to Netlify...
+                </h3>
+                <p className="text-gray-600 dark:text-gray-300">
+                  Your website is being deployed. This will only take a moment!
+                </p>
+              </div>
+            ) : deploymentUrl ? (
+              <div className="text-center">
+                <div className="w-16 h-16 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <Globe className="w-8 h-8 text-green-600 dark:text-green-400" />
+                </div>
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">
+                  🎉 Website Published!
+                </h3>
+                <p className="text-gray-600 dark:text-gray-300 mb-6">
+                  Your website is now live on the internet!
+                </p>
+                
+                <div className="bg-gray-100 dark:bg-gray-700 rounded-lg p-4 mb-6">
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">Your website URL:</p>
+                  <a
+                    href={deploymentUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 dark:text-blue-400 hover:underline break-all font-mono text-sm"
+                  >
+                    {deploymentUrl}
+                  </a>
+                </div>
+
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => {
+                      navigator.clipboard.writeText(deploymentUrl);
+                      alert('Link copied to clipboard!');
+                    }}
+                    className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-semibold"
+                  >
+                    Copy Link
+                  </button>
+                  <button
+                    onClick={() => window.open(deploymentUrl, '_blank')}
+                    className="flex-1 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-semibold"
+                  >
+                    Visit Site
+                  </button>
+                </div>
+
+                <button
+                  onClick={closeDeploymentModal}
+                  className="w-full mt-3 px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+                >
+                  Close
+                </button>
+              </div>
+            ) : null}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
