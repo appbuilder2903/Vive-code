@@ -10,6 +10,9 @@ export function HomePage() {
         <nav className="flex items-center justify-between">
           <Logo size="md" />
           <div className="flex items-center space-x-4">
+            <Link to="/" className="text-gray-700 dark:text-gray-300 hover:text-blue-600">
+              Simple Mode
+            </Link>
             <Link to="/templates" className="text-gray-700 dark:text-gray-300 hover:text-blue-600">
               Templates
             </Link>
