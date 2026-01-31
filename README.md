@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![Vive Code Logo](https://img.shields.io/badge/Vive-Code-blue?style=for-the-badge&logo=visual-studio-code)
+![Vive Code Logo](frontend/public/logo.svg)
 
 **The Next-Generation Cloud-Based Coding Platform**
 
@@ -14,6 +14,22 @@
 
 ---
 
+## 🎉 Latest Updates
+
+### ✨ **NEW: Professional Logo & Complete Replit-like Functionality!**
+
+Vive Code now features:
+- 🎨 **Beautiful animated logo** with dark mode support
+- 📁 **Full file operations** - create, delete, rename files & folders
+- 💾 **Auto-save** - never lose your work
+- ⌨️ **Keyboard shortcuts** - Ctrl/Cmd+S to save, Ctrl/Cmd+Enter to run
+- 🗂️ **Interactive file explorer** with context menus
+- 🎯 **Professional IDE experience** matching Replit and more!
+
+See [Feature Updates](docs/FEATURE_UPDATES.md) for complete details.
+
+---
+
 ## 🚀 Overview
 
 **Vive Code** is a powerful, feature-rich online IDE that combines the best aspects of Replit with advanced AI capabilities, real-time collaboration, and comprehensive educational tools. Built for developers, students, and educators, Vive Code provides a complete cloud-based development environment accessible from any browser.
@@ -21,15 +37,18 @@
 ## ✨ Key Features
 
 ### 🎯 Core IDE Capabilities
-- **Browser-Based Code Editor** with Monaco Editor
+- **Browser-Based Code Editor** with Monaco Editor (VS Code engine)
 - **50+ Programming Languages** supported with syntax highlighting
-- **Integrated Terminal** for command-line access
+- **File Operations** - Create, delete, rename files and folders
+- **Auto-save** - Automatic saving after 2 seconds of inactivity
+- **Keyboard Shortcuts** - Ctrl/Cmd+S (save), Ctrl/Cmd+Enter (run)
+- **Interactive File Explorer** with right-click context menus
 - **File & Folder Management** with intuitive tree view
-- **Multiple Tabs** for simultaneous file editing
-- **Auto-Indentation & Formatting**
+- **Auto-Indentation & Formatting** on paste and type
 - **Environment Variables** & Secrets Management
-- **Real-Time Console Output**
+- **Real-Time Console Output** with clear functionality
 - **Error Highlighting** and debugging
+- **Professional Logo** with animated cursor and dark mode support
 
 ### 🤖 AI-Powered Assistance (6 Providers)
 - **OpenAI GPT-4** - Industry-leading AI for code generation
