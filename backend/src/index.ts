@@ -4,6 +4,8 @@ import helmet from 'helmet';
 import session from 'express-session';
 import passport from 'passport';
 import rateLimit from 'express-rate-limit';
+import cookieParser from 'cookie-parser';
+import csrf from 'csurf';
 import { config } from './config';
 import { logger } from './utils/logger';
 import { errorHandler } from './middleware/errorHandler';
@@ -45,6 +47,9 @@ app.use('/api/', limiter);
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
+// Cookie parser (required for CSRF)
+app.use(cookieParser());
+
 // Session middleware
 app.use(session({
   secret: config.sessionSecret,
@@ -54,8 +59,12 @@ app.use(session({
     secure: config.nodeEnv === 'production',
     httpOnly: true,
     maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    sameSite: 'strict', // CSRF protection
   },
 }));
+
+// CSRF protection (for state-changing operations)
+const csrfProtection = csrf({ cookie: true });
 
 // Passport initialization
 app.use(passport.initialize());
@@ -66,16 +75,21 @@ app.get('/health', (req: Request, res: Response) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
+// CSRF token endpoint
+app.get('/api/csrf-token', csrfProtection, (req: Request, res: Response) => {
+  res.json({ csrfToken: req.csrfToken() });
+});
+
 // API Routes
 app.use('/api/auth', authRoutes);
-app.use('/api/projects', authMiddleware, projectRoutes);
-app.use('/api/ai', authMiddleware, aiRoutes);
-app.use('/api/execute', authMiddleware, executionRoutes);
+app.use('/api/projects', csrfProtection, authMiddleware, projectRoutes);
+app.use('/api/ai', csrfProtection, authMiddleware, aiRoutes);
+app.use('/api/execute', csrfProtection, authMiddleware, executionRoutes);
 app.use('/api/templates', templateRoutes);
-app.use('/api/collaboration', authMiddleware, collaborationRoutes);
-app.use('/api/deployment', authMiddleware, deploymentRoutes);
-app.use('/api/education', authMiddleware, educationRoutes);
-app.use('/api/users', authMiddleware, userRoutes);
+app.use('/api/collaboration', csrfProtection, authMiddleware, collaborationRoutes);
+app.use('/api/deployment', csrfProtection, authMiddleware, deploymentRoutes);
+app.use('/api/education', csrfProtection, authMiddleware, educationRoutes);
+app.use('/api/users', csrfProtection, authMiddleware, userRoutes);
 
 // 404 handler
 app.use((req: Request, res: Response) => {
