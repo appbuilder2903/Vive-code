@@ -1,6 +1,6 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { HomePage } from './pages/HomePage';
-import { EditorPage } from './pages/EditorPage';
+import { ImprovedEditorPage } from './pages/ImprovedEditorPage';
 import { LoginPage } from './pages/LoginPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { TemplatesPage } from './pages/TemplatesPage';
@@ -13,7 +13,7 @@ function App() {
       <Route path="/" element={<HomePage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/dashboard" element={<DashboardPage />} />
-      <Route path="/editor/:projectId" element={<EditorPage />} />
+      <Route path="/editor/:projectId" element={<ImprovedEditorPage />} />
       <Route path="/templates" element={<TemplatesPage />} />
       <Route path="/education" element={<EducationPage />} />
       <Route path="/auth/callback" element={<AuthCallback />} />
