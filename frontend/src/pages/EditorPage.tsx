@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import Editor from '@monaco-editor/react';
 import { Play, Save, Download, Settings, Users, MessageSquare } from 'lucide-react';
+import { Logo } from '../components/Logo';
 
 export function EditorPage() {
   const { projectId } = useParams();
@@ -17,6 +18,9 @@ export function EditorPage() {
       {/* Top Bar */}
       <div className="flex items-center justify-between px-4 py-2 bg-gray-800 border-b border-gray-700">
         <div className="flex items-center space-x-4">
+          <Link to="/dashboard">
+            <Logo size="sm" withText={false} />
+          </Link>
           <h2 className="text-white font-semibold">Project {projectId}</h2>
           <span className="text-gray-400 text-sm">index.js</span>
         </div>

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
-import { Code2, Sparkles, Users, GraduationCap, Rocket } from 'lucide-react';
+import { Sparkles, Users, GraduationCap, Rocket } from 'lucide-react';
+import { Logo } from '../components/Logo';
 
 export function HomePage() {
   return (
@@ -7,10 +8,7 @@ export function HomePage() {
       {/* Header */}
       <header className="container mx-auto px-4 py-6">
         <nav className="flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <Code2 className="w-8 h-8 text-blue-600" />
-            <span className="text-2xl font-bold text-gray-900 dark:text-white">Vive Code</span>
-          </div>
+          <Logo size="md" />
           <div className="flex items-center space-x-4">
             <Link to="/templates" className="text-gray-700 dark:text-gray-300 hover:text-blue-600">
               Templates
