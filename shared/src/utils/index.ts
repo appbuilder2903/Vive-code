@@ -1,8 +1,10 @@
 /**
  * Generate a unique ID
+ * Note: For production use, consider using a proper UUID library like 'uuid' or 'nanoid'
+ * This implementation is suitable for development but may have collisions under high concurrency
  */
 export function generateId(): string {
-  return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+  return `${Date.now()}-${Math.random().toString(36).slice(2, 11)}`;
 }
 
 /**

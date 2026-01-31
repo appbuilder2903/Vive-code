@@ -89,5 +89,6 @@ function broadcastToProject(projectId: string, message: WSMessage, excludeClient
 }
 
 function generateClientId(): string {
-  return `client-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+  // Note: For production, consider using a UUID library for more robust unique ID generation
+  return `client-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`;
 }

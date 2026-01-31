@@ -16,8 +16,18 @@ export const config = {
   redisUrl: process.env.REDIS_URL || 'redis://localhost:6379',
 
   // Authentication
-  jwtSecret: process.env.JWT_SECRET || 'your-super-secret-jwt-key',
-  sessionSecret: process.env.SESSION_SECRET || 'your-session-secret',
+  jwtSecret: (() => {
+    if (process.env.NODE_ENV === 'production' && !process.env.JWT_SECRET) {
+      throw new Error('JWT_SECRET must be set in production');
+    }
+    return process.env.JWT_SECRET || 'your-super-secret-jwt-key';
+  })(),
+  sessionSecret: (() => {
+    if (process.env.NODE_ENV === 'production' && !process.env.SESSION_SECRET) {
+      throw new Error('SESSION_SECRET must be set in production');
+    }
+    return process.env.SESSION_SECRET || 'your-session-secret';
+  })(),
 
   // OAuth - GitHub
   github: {
