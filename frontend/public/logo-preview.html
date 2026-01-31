@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vive Code Logo Preview</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: white;
+            text-align: center;
+            font-size: 3em;
+            margin-bottom: 50px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+        .card.dark {
+            background: #1a1a1a;
+            color: white;
+        }
+        .card h2 {
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 1.5em;
+        }
+        .card p {
+            color: #666;
+            line-height: 1.6;
+        }
+        .card.dark p {
+            color: #aaa;
+        }
+        .logo-large {
+            width: 200px;
+            height: 200px;
+        }
+        .logo-medium {
+            width: 100px;
+            height: 100px;
+        }
+        .logo-small {
+            width: 48px;
+            height: 48px;
+        }
+        .usage-example {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            margin-bottom: 30px;
+        }
+        .header-demo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .header-demo.dark {
+            background: #2d2d2d;
+            color: white;
+        }
+        .brand-text {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #1a1a1a;
+        }
+        .brand-text.dark {
+            color: white;
+        }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+            text-align: left;
+        }
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .feature-item::before {
+            content: "✨";
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 Vive Code Logo Showcase</h1>
+
+        <div class="grid">
+            <div class="card">
+                <img src="logo.svg" alt="Vive Code Logo" class="logo-large">
+                <h2>Light Mode</h2>
+                <p>Primary logo with blue-purple gradient. Features animated cursor and AI sparkle indicator.</p>
+            </div>
+
+            <div class="card dark">
+                <img src="logo-dark.svg" alt="Vive Code Dark Logo" class="logo-large">
+                <h2>Dark Mode</h2>
+                <p>Dark mode variant with adjusted colors for better visibility on dark backgrounds.</p>
+            </div>
+
+            <div class="card">
+                <img src="favicon.svg" alt="Vive Code Favicon" class="logo-medium">
+                <h2>Favicon</h2>
+                <p>Optimized 48x48px version for browser tabs and bookmarks.</p>
+            </div>
+        </div>
+
+        <div class="usage-example">
+            <h2>📋 Logo Usage Examples</h2>
+            
+            <h3>Header with Logo (Light Mode)</h3>
+            <div class="header-demo">
+                <img src="logo.svg" alt="Logo" class="logo-small">
+                <span class="brand-text">Vive Code</span>
+            </div>
+
+            <h3>Header with Logo (Dark Mode)</h3>
+            <div class="header-demo dark">
+                <img src="logo-dark.svg" alt="Logo" class="logo-small">
+                <span class="brand-text dark">Vive Code</span>
+            </div>
+
+            <h3>🎨 Design Elements</h3>
+            <div class="features">
+                <div class="feature-item">Code brackets (< >)</div>
+                <div class="feature-item">V-shaped design</div>
+                <div class="feature-item">Animated cursor</div>
+                <div class="feature-item">AI sparkle indicator</div>
+                <div class="feature-item">Gradient colors</div>
+                <div class="feature-item">Dark mode support</div>
+            </div>
+        </div>
+
+        <div class="usage-example">
+            <h2>🎯 Logo Specifications</h2>
+            <p><strong>Primary Colors:</strong></p>
+            <ul>
+                <li>Blue: #2563EB (Tailwind blue-600)</li>
+                <li>Purple: #7C3AED (Tailwind purple-600)</li>
+                <li>Accent: #FCD34D (Tailwind yellow-300)</li>
+            </ul>
+            <p><strong>Sizes:</strong></p>
+            <ul>
+                <li>Large: 200x200px (main logo)</li>
+                <li>Medium: 100x100px (headers)</li>
+                <li>Small: 48x48px (favicon)</li>
+            </ul>
+            <p><strong>Formats:</strong> SVG (scalable vector graphics)</p>
+            <p><strong>Animation:</strong> Cursor blinks every 1.5 seconds</p>
+        </div>
+    </div>
+</body>
+</html>
