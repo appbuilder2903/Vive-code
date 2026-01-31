@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { HomePage } from './pages/HomePage';
 import { SimpleModePage } from './pages/SimpleModePage';
 import { SimpleEditorPage } from './pages/SimpleEditorPage';
+import { SimpleTemplatesPage } from './pages/SimpleTemplatesPage';
 import { ImprovedEditorPage } from './pages/ImprovedEditorPage';
 import { LoginPage } from './pages/LoginPage';
 import { DashboardPage } from './pages/DashboardPage';
@@ -16,6 +17,7 @@ function App() {
       <Route path="/" element={<SimpleModePage />} />
       <Route path="/simple" element={<SimpleModePage />} />
       <Route path="/simple-editor" element={<SimpleEditorPage />} />
+      <Route path="/simple-templates" element={<SimpleTemplatesPage />} />
       
       {/* Advanced Mode */}
       <Route path="/home" element={<HomePage />} />
