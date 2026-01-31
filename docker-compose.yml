@@ -1,0 +1,97 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: vivecode-postgres
+    environment:
+      POSTGRES_DB: vivecode
+      POSTGRES_USER: vivecode
+      POSTGRES_PASSWORD: vivecode_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - vivecode-network
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: vivecode-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - vivecode-network
+
+  # MinIO (S3-compatible storage)
+  minio:
+    image: minio/minio
+    container_name: vivecode-minio
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio_data:/data
+    networks:
+      - vivecode-network
+
+  # Backend API
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: vivecode-backend
+    environment:
+      NODE_ENV: development
+      DATABASE_URL: postgresql://vivecode:vivecode_password@postgres:5432/vivecode
+      REDIS_URL: redis://redis:6379
+    ports:
+      - "5000:5000"
+      - "8080:8080"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - postgres
+      - redis
+      - minio
+    networks:
+      - vivecode-network
+
+  # Frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: vivecode-frontend
+    environment:
+      NODE_ENV: development
+      REACT_APP_API_URL: http://localhost:5000
+      REACT_APP_WS_URL: ws://localhost:8080
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+    networks:
+      - vivecode-network
+
+volumes:
+  postgres_data:
+  redis_data:
+  minio_data:
+
+networks:
+  vivecode-network:
+    driver: bridge
